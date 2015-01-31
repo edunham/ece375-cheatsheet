@@ -1,0 +1,57 @@
+slides 1:
+----------------------------
+Low-end embedded system:
+8-bit or 16-bit processor @ few
+to tens of MHz.
+Memories of tens to hundreds
+of Kilobytes (KB)
+
+
+Midterm         25%
+Quizzes (2)     10%
+Laboratory (7)  30%
+Assignments (4) 10%
+Final Exam      25% 
+
+
+----------------------------
+slides 2
+----------------------------
+
+Four dimensions of instruction sets:
+
+* Operations provided in the instruction set.
+
+* Number of explicit operands named per instruction.
+
+* Location of the operands in the CPU and how 
+  operand locations are specified.
+
+* Type and size of operand
+
+Categories of Instructions
+1) data transfer
+2) arithmetic
+3) logical
+4) control transfer
+5) I/O
+6) system
+7) floating point
+8) decimal
+9) string
+
+~~~~~~~~~Psuedo-ISA Stuff~~~~~~~~~~~~~~~~``
+Data Transfer Instructions:
+ LDA (load accumulator) LDA x where x is a location in memory
+ STA (store accumulator) store acc to memory 
+Arithmetic and Logic:
+ ADD (add to accumulator) ADD x, x location of what to add
+ NAND (NAND to accumulator)
+ SHFT (shift AC contents 1 bit left, shifting in 0)
+Control transfer:
+ J (jump to x) J x jump to instruction in location x
+ BNE (branch conditionally to x) BNE x branch to 
+      instruction at x if AC is not 0
+
+
+
