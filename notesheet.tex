@@ -1,0 +1,90 @@
+\documentclass[10pt]{article}
+\usepackage{multicol}
+\paperwidth=8.5in
+\paperheight=11in
+\begin{document}
+\begin{multicols}{2}
+Emily Dunham\\
+ECE375 Midterm 1 Notesheet
+
+"Store Accumulator Indirect with Pre-Decrement"
+
+STA -(x) ; M(x) <- M(x)-1, M(M(x)) <- AC,
+
+on the class cpu but with temporary register TEMP. An instruction consists of
+16 bits: A 4-bit operation code and a 12-bit address. All operands are 16
+bits. PC and MAR each contain 12 bits. AC, MDR, and TEMP each contain 16 bits,
+and IR is 4 bits. Give the sequence of microoperations required to implement
+the Execute cycles for the above STA -(x) instruction. Your solution should
+result in minimum number of microoperations. Assume PC is currently pointing 
+to the STA instruction and only PC and AC have the capability to 
+increment/decrement itself. 
+
+\begin{verbatim}
+Fetch Cycle
+Step 1: MAR <- PC;
+Step 2: MDR <- M(MAR), PC <- PC+1
+Step 3: IR <- MDRopcode, MAR<- MDRaddress 
+; Read inst. & increment PC
+Execute Cycle
+Step 1: MDR <- M(MAR) 
+; Get EA+1 from memory (i.e., M(x))
+Step 2: TEMP <- AC ; Save AC to TEMP
+Step 3: AC <- MDR ; Decrement EA+1
+Step 4: AC <- AC -1
+Step 5: MDR <- AC ; Store EA into M(x)
+Step 6: M(MAR) <- MDR
+Step 7: AC <- TEMP ; Restore AC
+Step 8: MAR <- MDR ; Have MAR point to EA
+Step 9: MDR <- AC 
+; Store content of AC into M(M(x))=M(EA)
+Step 10: M(MAR) <- MDR
+; Note that it is also possible to perform 
+; steps 1-2 and 6-7 at the same time.
+\end{verbatim}
+
+
+Consider the internal structure of a pseudo-CPU discussed in class. Suppose
+the pseudo-CPU can be used to implement the hypothetical instructions given
+below (Actually, these are instructions from PDP-8, which is the first
+commercially successful minicomputer from the 60s). Give the sequence of
+microoperations required to implement the Fetch and Execute cycle for each of
+the instructions shown below. Your solution should result in minimum number of
+microoperations. Assume PC is currently pointing to the instruction and only
+PC and AC have the capability to increment itself.
+
+(a) Logical AND: AND Y ; AC <- AC + M(Y)
+
+(b) Increment and skip if zero: 
+ISZ Y ; M(Y) <- M(Y) + 1, If(M(Y)+1=0) Then PC <- PC +1
+
+(c) Deposit and clear the accumulator: DCA
+Y ; M(Y) <- AC, AC <- 0
+
+(d) Jump to subroutine: JMS Y ; M(Y) <- PC, PC <- Y + 1
+
+Fetch Cycle
+
+Step 1: MAR <- PC
+
+Step 2: MDR <- M(MAR), PC <- PC+1
+
+Step 3: IR <- MDRopcode, MAR <- MDRaddress
+
+Step 4: Goto Execute cycle
+
+AND Y ; AC <- AC + M(Y)
+
+Execute Cycle
+
+Step 1: MDR <- M(MAR)
+
+Step 2: AC <- AC + MDR
+
+Step 3: Goto Fetch cycle
+
+
+
+
+\end{multicols}
+\end{document}
