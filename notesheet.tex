@@ -44,15 +44,23 @@ registers; 0x0060-0x00FF is 160 ext. 8-bit I/O regs; 0x100-0x10FF is 4096 x
 X is R27(high byte) and R26(low byte), Y R29 and R28, Z R31 and R30.
 
 Status register (SREG) 
-Bit 7: Global Interrupt Enable
-Bit 6: Bit-copy storage
-Bit 5: HalfCarry Flag
-Bit 4: Sign bit
-Bit 3: Two's complement overflow
-Bit 2: Negative flag
-Bit 1: Zero Flag
-Bit 0: Carry Flag
+Bit 7: Global Interrupt Enable (I)
+Bit 6: Bit-copy storage (T)
+Bit 5: HalfCarry Flag (H)
+Bit 4: Sign bit (S)
+Bit 3: Two's complement overflow (V)
+Bit 2: Negative flag (N)
+Bit 1: Zero Flag (Z)
+Bit 0: Carry Flag (C)
 
+\line(1,0){150}
+LSL/LSR Logical Shift Left/right, shifts a 0 in (spare bit goes into carry?)
+
+ROL/ROR rotate left or right through carry
+
+SBI/CBI set/clear bit in I/O, SBI/CBI A, bit
+
+SEf/CLf set/clear flag; SEI is turn on global interrupt
 
 \line(1,0){150}
 
