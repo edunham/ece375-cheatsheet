@@ -32,20 +32,38 @@ Four dimensions of instruction sets:
   8) decimal                                                                      
   9) string 
 
+AVR has 134 instructions
+
 \line(1,0){150}
 
-"Store Accumulator Indirect with Pre-Decrement"
+Program memory is non-volatile FLASH, data memory is volatile SRAM. Data
+memory 0x0000-0x001F is 32 8-bit GPRs (R0-R31); 0x0020-0x005F is 64 8-bit I/O
+registers; 0x0060-0x00FF is 160 ext. 8-bit I/O regs; 0x100-0x10FF is 4096 x
+8-bit SRAM. Flash is 64Kx16 bits wide.
 
-STA -(x) ; M(x) <- M(x)-1, M(M(x)) <- AC,
+X is R27(high byte) and R26(low byte), Y R29 and R28, Z R31 and R30.
 
-on the class cpu but with temporary register TEMP. An instruction consists of
-16 bits: A 4-bit operation code and a 12-bit address. All operands are 16
-bits. PC and MAR each contain 12 bits. AC, MDR, and TEMP each contain 16 bits,
-and IR is 4 bits. Give the sequence of microoperations required to implement
-the Execute cycles for the above STA -(x) instruction. Your solution should
-result in minimum number of microoperations. Assume PC is currently pointing 
-to the STA instruction and only PC and AC have the capability to 
-increment/decrement itself. 
+Status register (SREG) 
+Bit 7: Global Interrupt Enable
+Bit 6: Bit-copy storage
+Bit 5: HalfCarry Flag
+Bit 4: Sign bit
+Bit 3: Two's complement overflow
+Bit 2: Negative flag
+Bit 1: Zero Flag
+Bit 0: Carry Flag
+
+
+\line(1,0){150}
+
+Store Accumulator Indirect with Pre-Decrement
+
+STA -(x) ; M(x) $\leftarrow$ M(x)-1, M(M(x)) $\leftarrow$ AC,
+
+An instruction consists of 16 bits: A 4-bit operation code and a 12-bit
+address. All operands are 16 bits. PC and MAR each contain 12 bits. AC, MDR,
+and TEMP each contain 16 bits, and IR is 4 bits.
+
 
 \begin{verbatim}
 Fetch Cycle
@@ -77,7 +95,7 @@ Step 10: M(MAR) <- MDR
 \line(1,0){150}
 
 Store Accumulator with Post-Increment
-STA (x)+ ; M(M(x)) <- AC, M(x) <- M(x)+1
+STA (x)+ ; M(M(x)) $\leftarrow$ AC, M(x) $\leftarrow$ M(x)+1
 
 \begin{verbatim}
 Fetch: 
@@ -100,7 +118,7 @@ Execute:
 
 Increment and Skip if Zero (ISZ)
 
-ISZ Y ; M(Y) <- M(Y) + 1, if (M(Y)+1 = 0) then PC <- PC+1
+ISZ Y ; M(Y) $\leftarrow$ M(Y) + 1, if (M(Y)+1 = 0) then PC $\leftarrow$ PC+1
 
 \begin{verbatim}
 Fetch: 
@@ -171,24 +189,7 @@ RET
 
 \line(1,0){150}
 
-Consider the internal structure of a pseudo-CPU discussed in class. Suppose
-the pseudo-CPU can be used to implement the hypothetical instructions given
-below (Actually, these are instructions from PDP-8, which is the first
-commercially successful minicomputer from the 60s). Give the sequence of
-microoperations required to implement the Fetch and Execute cycle for each of
-the instructions shown below. Your solution should result in minimum number of
-microoperations. Assume PC is currently pointing to the instruction and only
-PC and AC have the capability to increment itself.
-
-(a) Logical AND: AND Y ; AC <- AC + M(Y)
-
-(b) Increment and skip if zero: 
-ISZ Y ; M(Y) <- M(Y) + 1, If(M(Y)+1=0) Then PC <- PC +1
-
-(c) Deposit and clear the accumulator: DCA
-Y ; M(Y) <- AC, AC <- 0
-
-(d) Jump to subroutine: JMS Y ; M(Y) <- PC, PC <- Y + 1
+Jump to subroutine: JMS Y ; M(Y) $\leftarrow$ PC, PC $\leftarrow$ Y + 1
 
 \begin{verbatim}
 Fetch Cycle
