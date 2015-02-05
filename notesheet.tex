@@ -1,9 +1,10 @@
-\documentclass[10pt]{article}
+\documentclass[8pt]{article}
 \usepackage{multicol}
+\usepackage[margin=0.5in]{geometry}
 \paperwidth=8.5in
 \paperheight=11in
 \begin{document}
-\begin{multicols}{2}
+\begin{multicols}{3}
 Emily Dunham\\
 ECE375 Midterm 1 Notesheet
 
@@ -22,25 +23,28 @@ increment/decrement itself.
 
 \begin{verbatim}
 Fetch Cycle
-Step 1: MAR <- PC;
-Step 2: MDR <- M(MAR), PC <- PC+1
-Step 3: IR <- MDRopcode, MAR<- MDRaddress 
+1: MAR <- PC;
+2: MDR <- M(MAR), PC <- PC+1
+3: IR <- MDRopc, MAR<- MDRadr 
 ; Read inst. & increment PC
+\end{verbatim}
+
+\begin{verbatim}
 Execute Cycle
 Step 1: MDR <- M(MAR) 
-; Get EA+1 from memory (i.e., M(x))
-Step 2: TEMP <- AC ; Save AC to TEMP
-Step 3: AC <- MDR ; Decrement EA+1
-Step 4: AC <- AC -1
-Step 5: MDR <- AC ; Store EA into M(x)
-Step 6: M(MAR) <- MDR
-Step 7: AC <- TEMP ; Restore AC
-Step 8: MAR <- MDR ; Have MAR point to EA
-Step 9: MDR <- AC 
-; Store content of AC into M(M(x))=M(EA)
+; Get EA+1 from mem (i.e., M(x))
+2: TEMP <- AC ; Save AC to TEMP
+3: AC <- MDR ; Decrement EA+1
+4: AC <- AC -1
+5: MDR <- AC ; Store EA into M(x)
+6: M(MAR) <- MDR
+7: AC <- TEMP ; Restore AC
+8: MAR <- MDR ; point MAR to EA
+9: MDR <- AC 
+; Store AC into M(M(x))=M(EA)
 Step 10: M(MAR) <- MDR
-; Note that it is also possible to perform 
-; steps 1-2 and 6-7 at the same time.
+; Note that you can also perform 
+; steps 1-2 and 6-7 simultaneously.
 \end{verbatim}
 
 
@@ -63,26 +67,18 @@ Y ; M(Y) <- AC, AC <- 0
 
 (d) Jump to subroutine: JMS Y ; M(Y) <- PC, PC <- Y + 1
 
+\begin{verbatim}
 Fetch Cycle
-
-Step 1: MAR <- PC
-
-Step 2: MDR <- M(MAR), PC <- PC+1
-
-Step 3: IR <- MDRopcode, MAR <- MDRaddress
-
-Step 4: Goto Execute cycle
-
+1: MAR <- PC
+2: MDR <- M(MAR), PC <- PC+1
+3: IR <- MDRopc, MAR <- MDRadr
+4: Goto Execute cycle
 AND Y ; AC <- AC + M(Y)
-
 Execute Cycle
-
-Step 1: MDR <- M(MAR)
-
-Step 2: AC <- AC + MDR
-
-Step 3: Goto Fetch cycle
-
+1: MDR <- M(MAR)
+2: AC <- AC + MDR
+3: Goto Fetch cycle
+\end{verbatim}
 
 
 
