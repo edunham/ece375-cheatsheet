@@ -74,6 +74,103 @@ Step 10: M(MAR) <- MDR
 \end{verbatim}
 
 
+\line(1,0){150}
+
+Store Accumulator with Post-Increment
+STA (x)+ ; M(M(x)) <- AC, M(x) <- M(x)+1
+
+\begin{verbatim}
+Fetch: 
+1: MAR <- PC
+2: MDR <- M(MAR), PC <- PC+1
+3: IR <- MDRopc, MAR <- MDRadr
+
+Execute: 
+1: MDR <- M(MAR), TEMP <- AC
+2: AC <- MDR
+3: AC <- AC+1
+4: MDR <- AC
+5: M(MAR) <- MDR, AC <- AC-1
+6: MAR <- AC
+7: MDR <- TEMP, AC <- TEMP
+8: M(MAR) <- MDR
+\end{verbatim}
+
+\line(1,0){150}
+
+Increment and Skip if Zero (ISZ)
+
+ISZ Y ; M(Y) <- M(Y) + 1, if (M(Y)+1 = 0) then PC <- PC+1
+
+\begin{verbatim}
+Fetch: 
+1. MAR <- PC
+2. MDR <- M(MAR), PC <- PC+1
+3. IR <- MDRopc, MAR <- MDRadr
+
+Execute: 
+1. MDR <- M(MAR), TEMP <- AC
+2. AC <- MDR
+3. AC <- AC+1
+4. MDR <- AC
+5: M(MAR) <- MDR, AC <- TEMP, 
+   if(AC==0)then PC <- PC+1
+
+\end{verbatim}
+
+\line(1,0){150}
+
+ST -X, R3
+
+\begin{verbatim}
+Fetch: 
+1. MAR <- PC
+2. MDR <- M(MAR), PC <- PC+1
+3. IR(15...8)<- MDR
+4. MAR <- PC
+5. MDR <- M(MAR), PC <- PC+1
+6. IR(7...0) <- MDR
+\end{verbatim}
+
+Next, we need to decrement register X, which is in registers R26 (XH) and R27
+(XL). Once X is pre-decremented, the address is put into MAR, content of R27
+is put into MDR, and stored into the memory. Note that it is also possible to
+perform Steps 4 and 6 and Steps 5 and 7 in parallel. 
+
+\begin{verbatim}
+1. AC(15..8) <- R27
+2. AC(7..0) <- R26
+3. AC <- AC-1
+4. R27 <- AC(15..8), 
+   MAR(15..8) <- AC(15..8)
+5. R26 <- AC(7..0), 
+   MAR(7..0) <- AC(7..0)
+6. MDR <- R3
+7. M(MAR) <- MDR
+\end{verbatim}
+
+\line(1,0){150}
+
+RET
+
+\begin{verbatim}
+1. MAR <- PC
+2. MDR <- M(MAR), PC <- PC+1
+3. IR(15..8) <- MDR
+4. MAR <- PC
+5. MDR <- M(MAR), PC <- PC+1
+6. IR(7..0) <- MDR
+7. SP <- SP+1
+8. MAR <- SP
+9. MDR <- M(MAR), SP <- SP+1
+10. PC(15..8) <- MDR
+11. MAR <- SP
+12. MDR <- M(MAR)
+13. PC(7..0) <- MDR
+\end{verbatim}
+
+\line(1,0){150}
+
 Consider the internal structure of a pseudo-CPU discussed in class. Suppose
 the pseudo-CPU can be used to implement the hypothetical instructions given
 below (Actually, these are instructions from PDP-8, which is the first
